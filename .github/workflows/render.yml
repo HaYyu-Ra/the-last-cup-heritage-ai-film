@@ -1,0 +1,48 @@
+name: Render The Last Cup (offline draft)
+
+on:
+  push:
+    paths:
+      - "storyboard.json"
+      - "pipeline/**"
+      - "requirements.txt"
+      - ".github/workflows/render.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Validate storyboard
+        run: python -m pipeline.validate
+      - name: Render both video formats
+        run: python -m pipeline.run
+      - name: Upload MP4 outputs and production assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: the-last-cup-offline-draft
+          path: |
+            outputs/final/*.mp4
+            outputs/keyframes/**
+            outputs/audio/**
+            runs.jsonl
+          if-no-files-found: error
+          retention-days: 14
