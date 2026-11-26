@@ -1,68 +1,52 @@
 # The Last Cup — Ethiopian Heritage Short Film
 
-A 75-second heritage short inspired by the Ethiopian coffee ceremony. The story explores family, memory, belonging, and traditions carried between generations.
+A 75-second cinematic tribute to Ethiopia's coffee ceremony, family, hospitality, and intergenerational memory.
 
-> **Implementation disclosure:** This repository is an offline production-pipeline prototype. Its scene cards, synthesized tone-bed soundtrack, and silent narration track are placeholders—not outputs from AI image, video, music, or speech models. Amharic narration text and English subtitles are included in the storyboard.
+## Amharic cinematic edition
 
-## Film details
-- Duration: 75 seconds
-- Shots: 10
-- Languages: Amharic narration text; English subtitles
-- Exports: 9:16 vertical and 16:9 horizontal MP4
+The production workflow now uses:
+- A generated nine-scene Ethiopian coffee-ceremony image montage, split into individual scene frames.
+- Amharic narration synthesized from the reviewed script with Google Text-to-Speech (gTTS, language `am`).
+- An original, procedurally synthesized pentatonic-inspired instrumental accompaniment. It is an original electronic score, **not** a field recording or a claim of authentic traditional performance.
+- Gentle Ken Burns motion and vertical (9:16) plus horizontal (16:9) H.264/AAC exports.
+- GitHub Actions validation of audio streams and downloadable MP4 artifacts.
 
-## Pipeline
-1. Validate storyboard against JSON Schema and check total runtime.
-2. Create labeled offline placeholder keyframe cards.
-3. Render draft motion clips with FFmpeg Ken Burns-style movement.
-4. Synthesize a tonal placeholder audio bed.
-5. Create a silent narration placeholder; retain Amharic script in the storyboard.
-6. Assemble vertical and horizontal MP4 exports.
-7. Log stage metadata, latency, implementation labels, and costs.
+## Build locally (Windows PowerShell)
 
-## Windows quick start
-Requirements: Python 3.11+ and FFmpeg available on PATH.
+Requirements: Python 3.11+, FFmpeg on PATH, and internet access for Amharic speech synthesis.
 
 ```powershell
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python -m pipeline.validate
-python -m pipeline.run
+python -m pipeline.production
 ```
 
-See WINDOWS_INSTALL.md for full instructions.
+Outputs:
+- `outputs/final/the_last_cup_vertical.mp4`
+- `outputs/final/the_last_cup_horizontal.mp4`
+- `outputs/audio/amharic_narration.mp3`
+- `outputs/audio/original_instrumental.wav`
 
-## Outputs
-- outputs/keyframes/ — placeholder storyboard cards
-- outputs/shots/ — rendered shot clips
-- outputs/audio/ — placeholder score and silent narration WAV
-- outputs/final/the_last_cup_vertical.mp4
-- outputs/final/the_last_cup_horizontal.mp4
+## GitHub Actions
 
-Generated media is created locally and is not committed by default.
+Push changes to `assets/**`, `pipeline/production.py`, or `requirements.txt`, or manually run **Render The Last Cup — Amharic cinematic edition** from Actions. Download the artifact named `the-last-cup-amharic-cinematic`.
 
-## Documentation
-See ARCHITECTURE.md, ETHICS.md, and docs/ for production workflow and limitations.
+## Narration script
 
-## AI integration roadmap
-Future work: connect an image-generation provider for keyframes, an image-to-video provider, Amharic text-to-speech, and an original/licensed score. Verify current API access, model licenses, terms, costs, and data handling before use. Never label placeholder assets as AI-generated.
+ቡና ለኢትዮጵያውያን ከመጠጥ በላይ ትርጉም አለው። ቡና የታሪካችን፣ የባህላችንና የአንድነታችን ምልክት ነው።
 
-## Responsible storytelling
-Use fictional or consenting people, avoid uploading private family information, and review cultural details for accuracy. Disclose generated, edited, recorded, stock, and placeholder assets honestly.
+ከቡና ፍሬ መታጠብ፣ መቆላትና መፍጨት ጀምሮ፣ በገንቦ ውስጥ እስከሚፈላበት ድረስ፣ እያንዳንዱ ሂደት የራሱ ውበት አለው።
 
-**Project status:** Functional offline pipeline prototype; real generative-model integrations, voiced narration, original score, and final cinematic imagery remain future production tasks.
+የቡና ሥነ ሥርዓት ቤተሰብን ያሰባስባል፣ ጎረቤትን ያቀራርባል፣ ወዳጅነትንም ያጠናክራል።
 
-*Culture lives in the stories we pass on — and the traditions we keep alive.*
+ዛሬ የምንጠጣው ቡና የትናንቱን ታሪክ ይዞ ወደ ነገ ይጓዛል።
 
-## Assignment evidence and report
-- `DESIGN.md`: audience, intent, and honest placeholders for both required user tests.
-- `EXPERIMENTS.md`: ten hypotheses to test; entries are pending until real evidence is recorded.
-- `FAILURES.md`: current implementation limits and a journal for actual blockers.
-- `COSTS.md`: measured local run data and clear separation from model/API costs.
-- `ETHICS.md`: consent, privacy, disclosure, and licence audit.
-- `REPORT_TEMPLATE.md`: Assignment 1 report structure.
-- `WALKTHROUGH_PLAN.md`: guide for the required five-minute-or-less recording.
-- `PUBLIC_POST_TEMPLATE.md`: starting point for your own public post.
-- `runs.jsonl`: measured offline pipeline run; records identify placeholder stages explicitly.
+ባህላችንን እንጠብቅ። ታሪካችንን ለትውልድ እናስተላልፍ።
 
-The documentation does not claim that the audience tests, model integrations, ten experiments, public post, or walkthrough have been completed. Those require real participants, provider access, and your own publication/recording.
+ኢትዮጵያዊነት በአንድ ጽዋ ቡና ውስጥ!
+
+## Honest production note
+
+The images are AI-generated illustrative visuals. The voice is TTS, not a human family recording. The instrumental track is algorithmically synthesized. Review the Amharic pronunciation and cultural details before public release. The speech-synthesis step requires network access.

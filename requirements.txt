@@ -1,3 +1,4 @@
 Pillow>=10.0
 jsonschema>=4.20
 python-dotenv>=1.0
+gTTS>=2.5.4
