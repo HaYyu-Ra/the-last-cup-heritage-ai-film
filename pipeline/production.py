@@ -43,7 +43,7 @@ def main():
         folder=OUT/"tmp"/name; folder.mkdir(parents=True,exist_ok=True); clips=[]
         for n,img in enumerate(imgs):
             clip=folder/f"{n:02d}.mp4"; clips.append(clip)
-            vf=f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},zoompan=z='min(zoom+0.0007,1.06)':d=200:s={w}x{h}:fps=24,fade=t=in:st=0:d=.4,format=yuv420p"
+            vf=f"scale={w}:{h}:force_original_aspect_ratio=increase,crop={w}:{h},zoompan=z='min(zoom+0.0007,1.06)':d=200:s={w}x{h}:fps=24,fade=t=in:st=0:d=0.4,format=yuv420p"
             run(["ffmpeg","-y","-loop","1","-i",str(img),"-t","8.333","-vf",vf,"-an","-c:v","libx264","-preset","ultrafast","-crf","24",str(clip)])
         listing=folder/"list.txt"; listing.write_text("".join(f"file '{p.resolve()}'\n" for p in clips),encoding="utf-8")
         picture=folder/"picture.mp4"; run(["ffmpeg","-y","-f","concat","-safe","0","-i",str(listing),"-c","copy",str(picture)])
