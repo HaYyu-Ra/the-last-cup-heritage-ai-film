@@ -53,3 +53,16 @@ Use fictional or consenting people, avoid uploading private family information, 
 **Project status:** Functional offline pipeline prototype; real generative-model integrations, voiced narration, original score, and final cinematic imagery remain future production tasks.
 
 *Culture lives in the stories we pass on — and the traditions we keep alive.*
+
+## Assignment evidence and report
+- `DESIGN.md`: audience, intent, and honest placeholders for both required user tests.
+- `EXPERIMENTS.md`: ten hypotheses to test; entries are pending until real evidence is recorded.
+- `FAILURES.md`: current implementation limits and a journal for actual blockers.
+- `COSTS.md`: measured local run data and clear separation from model/API costs.
+- `ETHICS.md`: consent, privacy, disclosure, and licence audit.
+- `REPORT_TEMPLATE.md`: Assignment 1 report structure.
+- `WALKTHROUGH_PLAN.md`: guide for the required five-minute-or-less recording.
+- `PUBLIC_POST_TEMPLATE.md`: starting point for your own public post.
+- `runs.jsonl`: measured offline pipeline run; records identify placeholder stages explicitly.
+
+The documentation does not claim that the audience tests, model integrations, ten experiments, public post, or walkthrough have been completed. Those require real participants, provider access, and your own publication/recording.
