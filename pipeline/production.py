@@ -1,7 +1,7 @@
 """Cinematic renderer: 9 generated coffee-ceremony images + Amharic speech + original score."""
 import json, math, os, subprocess, wave
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 from gtts import gTTS
 
 ROOT=Path(__file__).resolve().parents[1]
