@@ -4,6 +4,7 @@ on:
     paths:
       - "assets/**"
       - "pipeline/production.py"
+      - "storyboard.json"
       - "requirements.txt"
       - ".github/workflows/render.yml"
   workflow_dispatch:
@@ -30,11 +31,14 @@ jobs:
         run: python -m pipeline.validate
       - name: Render cinematic videos with Amharic narration and music
         run: python -m pipeline.production
-      - name: Verify video streams and audible audio
+      - name: Verify both exports and audio streams
         run: |
-          for f in outputs/final/*.mp4; do
+          set -euo pipefail
+          for f in outputs/final/the_last_cup_vertical.mp4 outputs/final/the_last_cup_horizontal.mp4; do
+            test -s "$f"
             ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "$f" | grep -q .
-            ffprobe -v error -show_entries format=duration -of csv=p=0 "$f"
+            duration=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f")
+            python -c "import sys; d=float(sys.argv[1]); assert 74.5 <= d <= 75.5, f'Unexpected duration: {d}'" "$duration"
           done
       - uses: actions/upload-artifact@v4
         with:
