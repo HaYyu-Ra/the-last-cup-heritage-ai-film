@@ -8,7 +8,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"outputs"
 def load_script():
     data=json.loads((ROOT/"storyboard.json").read_text(encoding="utf-8"))
-    script="\\n".join(shot.get("narration_am","").strip() for shot in data["shots"] if shot.get("narration_am","").strip())
+    script="\n".join(shot.get("narration_am","").strip() for shot in data["shots"] if shot.get("narration_am","").strip())
     if not script:
         raise ValueError("No Amharic narration found in storyboard")
     return script, data["shots"], int(data["project"]["total_duration_seconds"])
