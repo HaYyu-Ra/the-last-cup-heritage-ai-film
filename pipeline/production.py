@@ -1,17 +1,18 @@
 """Cinematic renderer: 9 generated coffee-ceremony images + Amharic speech + original score."""
-import math, os, subprocess, wave
+import json, math, os, subprocess, wave
 from pathlib import Path
 from PIL import Image
 from gtts import gTTS
 
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"outputs"
-SCRIPT="""ቡና ለኢትዮጵያውያን ከመጠጥ በላይ ትርጉም አለው። ቡና የታሪካችን፣ የባህላችንና የአንድነታችን ምልክት ነው።
-ከቡና ፍሬ መታጠብ፣ መቆላትና መፍጨት ጀምሮ፣ በገንቦ ውስጥ እስከሚፈላበት ድረስ፣ እያንዳንዱ ሂደት የራሱ ውበት አለው።
-የቡና ሥነ ሥርዓት ቤተሰብን ያሰባስባል፣ ጎረቤትን ያቀራርባል፣ ወዳጅነትንም ያጠናክራል።
-ዛሬ የምንጠጣው ቡና የትናንቱን ታሪክ ይዞ ወደ ነገ ይጓዛል።
-ባህላችንን እንጠብቅ። ታሪካችንን ለትውልድ እናስተላልፍ።
-ኢትዮጵያዊነት በአንድ ጽዋ ቡና ውስጥ!"""
+def load_script():
+    data=json.loads((ROOT/"storyboard.json").read_text(encoding="utf-8"))
+    script="\\n".join(shot.get("narration_am","").strip() for shot in data["shots"] if shot.get("narration_am","").strip())
+    if not script:
+        raise ValueError("No Amharic narration found in storyboard")
+    return script
+
 
 def run(args): subprocess.run(args,check=True)
 def score(path,secs=75):
@@ -38,7 +39,7 @@ def main():
             collage.crop((round(c*sw/3),round(r*sh/3),round((c+1)*sw/3),round((r+1)*sh/3))).save(p,quality=94)
             imgs.append(p)
     speech=OUT/"audio/amharic_narration.mp3"; music=OUT/"audio/original_instrumental.wav"
-    gTTS(text=SCRIPT,lang="am",slow=False).save(str(speech)); score(music)
+    gTTS(text=script,lang="am",slow=False).save(str(speech)); score(music)
     for name,w,h in [("vertical",1080,1920),("horizontal",1920,1080)]:
         folder=OUT/"tmp"/name; folder.mkdir(parents=True,exist_ok=True); clips=[]
         for n,img in enumerate(imgs):
@@ -49,6 +50,6 @@ def main():
         picture=folder/"picture.mp4"; run(["ffmpeg","-y","-f","concat","-safe","0","-i",str(listing),"-c","copy",str(picture)])
         dest=OUT/"final"/f"the_last_cup_{name}.mp4"
         run(["ffmpeg","-y","-i",str(picture),"-i",str(speech),"-i",str(music),"-filter_complex","[1:a]volume=1[n];[2:a]volume=.20[m];[n][m]amix=inputs=2:duration=longest:dropout_transition=2,alimiter=limit=.95[a]","-map","0:v","-map","[a]","-t","75","-c:v","copy","-c:a","aac","-b:a","192k","-movflags","+faststart",str(dest)])
-    (OUT/"audio/amharic_narration.txt").write_text(SCRIPT,encoding="utf-8")
+    (OUT/"audio/amharic_narration.txt").write_text(script,encoding="utf-8")
     print("SUCCESS: both MP4s include audible Amharic narration and original synthesized instrumental music.")
 if __name__=="__main__": main()
