@@ -30,6 +30,7 @@ def score(path,secs=75):
             w.writeframes(data)
 
 def main():
+    script=load_script()
     (OUT/"audio").mkdir(parents=True,exist_ok=True); (OUT/"final").mkdir(parents=True,exist_ok=True)
     collage=Image.open(ROOT/"assets/coffee_ceremony_collage.jpg").convert("RGB")
     sw,sh=collage.size; imgs=[]
